@@ -1,21 +1,37 @@
 from ftplib import FTP
+import os
 import ftplib
 import tkinter
 from tkinter import *
 
 
-serveur = # adresse du serveur FTP
-user=  # votre identifiant
-code= # votre mot de passe
+
 ftp = ftplib.FTP(serveur,user,code) # ligne quui permet la connection 
-ftp.retrlines('LIST') 
+#ftp.retrlines('LIST') 
+
+#methode utiliser pour retouner le nom de l'utilisateur 
+def recupUsernam ():
+    global user
+    list = os.getcwd()
+    listTempo = list.split('/')
+    user = listTempo[2]
+   
+
+
 
 
 
 root = Tk()
 root.title("Py-FTP")
+root.geometry('850x800')
+
+user = "defaut"
+
+Frame1 = Frame(root, borderwidth=2, relief=GROOVE)
+Frame1.pack(side=LEFT, padx=30, pady=30)
+
 menubar = Menu(root)
-filemenu = Menu(menubar, tearoff=0)
+filemenu = Menu(menubar, tearoff=1)
 filemenu.add_command(label="Nouveau", command="")
 filemenu.add_command(label="Ouvrir", command="")
 filemenu.add_command(label="envoyé-test", command="")
@@ -37,15 +53,34 @@ helpmenu = Menu(menubar, tearoff=0)
 helpmenu.add_command(label="à propos...", command="")
 menubar.add_cascade(label="plus", menu=helpmenu)
 
+#ceation de la frame de gauche 
+mainframe = Frame(root, background="bisque")
+mainframe.place(x=0, y=125, anchor="nw", width=385, height=460)
 
-label = Label(root,text="")
+
+label = Label(root,text=" ")
 label.place(x=20,y=20)
-button = Button(root,text="Connexion",command="").place(x=0,y=0)
-button1 = Button(root,text="deconection",command="").place(x=0,y=25)
-button1 = Button(root,text="telecharger",command="").place(x=0,y=50)
+buttonConnexion = Button(root,text="Connexion",command="").place(x=0,y=0)
+buttonDeconnection = Button(root,text="deconection",command="").place(x=0,y=25)
+buttonTelecharger = Button(root,text="telecharger",command="").place(x=0,y=50)
 button3 = Button(root,text="+",command="").place(x=0,y=75)
-button3 = Button(root,text="liste",command="").place(x=0,y=100)
+button4 = Button(root,text="liste",command="").place(x=0,y=100)
 
+#mettre des chose dans la frame
+labelLocal = Label(mainframe,text="local").place(x=0,y=0)
+#user = recupUsernam
+recupUsernam()
+directory = '/users/'
+directory += user
+list = os.listdir(directory)
+listOfFiles = Listbox (mainframe)
+for i in range (len(list)) :
+    #print(list[i])
+    listOfFiles.insert(i,list[i])
+listOfFiles.pack()
+
+
+#mainframe.pack(expand=YES)
 
 
 
