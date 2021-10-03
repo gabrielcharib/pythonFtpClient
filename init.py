@@ -6,7 +6,7 @@ from tkinter import *
 
 
 
-ftp = ftplib.FTP(serveur,user,code) # ligne quui permet la connection 
+#ftp = ftplib.FTP(serveur,user,code) # ligne quui permet la connection 
 #ftp.retrlines('LIST') 
 
 #methode utiliser pour retouner le nom de l'utilisateur 
@@ -15,17 +15,40 @@ def recupUsernam ():
     list = os.getcwd()
     listTempo = list.split('/')
     user = listTempo[2]
+
+
+def a():  
+    racine0=tkinter.Tk()
+    bouton0=tkinter.Button(racine0, text="Quitter", command=racine0.withdraw)  
+    bouton0.pack(side=tkinter.RIGHT)
+    bouton=tkinter.Button(racine0, text="licence", command="") 
+    bouton.pack(side=tkinter.TOP)
+    mot0=tkinter.Label(racine0, text="CHARIB FREEWARE BETA (FTP) 0.0.1.b")
+    racine0.geometry("260x100")
+    mot0.pack(side=tkinter.BOTTOM)
+    racine0.mainloop()
+
+def localDir():
+    global directory 
+    global listOfFiles
+    recupUsernam()
+    directory= '/users/'
+    directory += user
+    list = os.listdir(directory)
+    listOfFiles = Listbox (mainframe,height=35,width=120)
+    for i in range (len(list)) :
+        listOfFiles.insert(i,list[i])
+    listOfFiles.pack()
+
+
    
 
-
-
-
-
+##attention tout ça c'est des variables locales eviter un max
 root = Tk()
 root.title("Py-FTP")
 root.geometry('850x800')
 
-user = "defaut"
+
 
 Frame1 = Frame(root, borderwidth=2, relief=GROOVE)
 Frame1.pack(side=LEFT, padx=30, pady=30)
@@ -50,7 +73,7 @@ menubar.add_cascade(label="py-rar",command="")
 rarmenu.add_cascade(label="à propos...", command="")
  
 helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label="à propos...", command="")
+helpmenu.add_command(label="à propos...", command=a)
 menubar.add_cascade(label="plus", menu=helpmenu)
 
 #ceation de la frame de gauche 
@@ -68,21 +91,19 @@ button4 = Button(root,text="liste",command="").place(x=0,y=100)
 
 #mettre des chose dans la frame
 labelLocal = Label(mainframe,text="local").place(x=0,y=0)
+
+scrollbar = Scrollbar (mainframe)
+scrollbar.pack(side= RIGHT , fill=Y)
 #user = recupUsernam
-recupUsernam()
-directory = '/users/'
-directory += user
-list = os.listdir(directory)
-listOfFiles = Listbox (mainframe)
-for i in range (len(list)) :
-    #print(list[i])
-    listOfFiles.insert(i,list[i])
-listOfFiles.pack()
+
+directory = ''
+user = "defaut"
+listOfFiles = ''
+
+localDir()
 
 
-#mainframe.pack(expand=YES)
-
-
+scrollbar.config(command=listOfFiles.yview)
 
 root.config(menu=menubar)
 root.mainloop()
